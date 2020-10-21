@@ -1,9 +1,11 @@
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as cr from '@aws-cdk/custom-resources';
 
 export class MediaproductionStack extends cdk.Stack {
   private vpc: ec2.Vpc;
   private ami: string;
+  private tgId: string;
   private instanceType: string;
   private placement: ec2.CfnPlacementGroup;
 
@@ -16,8 +18,9 @@ export class MediaproductionStack extends cdk.Stack {
     this.placement = this.createPlacementGroup();
 
     this.createInputs(4);
-    this.createTransitGateway();
-  }
+    this.tgId = this.createTransitGateway();
+    this.createTransitGatewayDomain(this.tgId);
+  };
 
   private createVPC(): ec2.Vpc {
     return new ec2.Vpc(this, 'mediaVPC', {
@@ -52,7 +55,7 @@ export class MediaproductionStack extends cdk.Stack {
         }
       ],
     });
-  }
+  };
 
   private createInputs(total: number) {
     // Using ec2.CfnInstance since ec2.Instance does not supply placement group options
@@ -64,13 +67,13 @@ export class MediaproductionStack extends cdk.Stack {
         placementGroupName: this.placement.getAtt.name
       });
     }
-  }
+  };
 
   private createPlacementGroup(){
     return new ec2.CfnPlacementGroup(this, 'mediaPlacementGroup',{strategy: 'cluster'});
-  }
+  };
 
-  private createTransitGateway(){
+  private createTransitGateway(): string{
     const tg =  new ec2.CfnTransitGateway(this, 'mediaTransitGateway',{
       description: 'TG to allow mDNS',
       multicastSupport: 'enable',
@@ -81,7 +84,37 @@ export class MediaproductionStack extends cdk.Stack {
       vpcId: this.vpc.vpcId,
       transitGatewayId: tg.ref,
       subnetIds: this.vpc.selectSubnets().subnetIds,
-    }
-    );
-  }
+    });
+
+    return tg.ref
+  };
+
+  private createTransitGatewayDomain(tgId: string) {
+    const createTGDomain = new cr.AwsCustomResource(this, 'CreateDomain', {
+      onUpdate: { // will also be called for a CREATE event
+        service: 'EC2',
+        action: 'createTransitGatewayMulticastDomain',
+        parameters: {
+          TransitGatewayId: tgId
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()) // Update physical id to always fetch the latest version
+      },
+      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
+    });
+    const domainId = createTGDomain.getResponseField('TransitGatewayMulticastDomainId');
+
+    new cr.AwsCustomResource(this, 'CreateAssociation', {
+      onUpdate: { // will also be called for a CREATE event
+        service: 'EC2',
+        action: 'associateTransitGatewayMulticastDomain',
+        parameters: {
+          SubnetIds: this.vpc.selectSubnets().subnetIds,
+          TransitGatewayMulticastDomainId: domainId,
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()) // Update physical id to always fetch the latest version
+      },
+      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
+    });
+
+  };
 }
