@@ -1,13 +1,17 @@
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as cr from '@aws-cdk/custom-resources';
+import { Reference } from '@aws-cdk/core';
+
+interface transitGatewayInfo {tgId: string, attachmentId: string};
 
 export class MediaproductionStack extends cdk.Stack {
   private vpc: ec2.Vpc;
   private ami: string;
-  private tgId: string;
+  private tgId: transitGatewayInfo;
   private instanceType: string;
   private placement: ec2.CfnPlacementGroup;
+  private domainId: string;
 
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -17,7 +21,7 @@ export class MediaproductionStack extends cdk.Stack {
     this.ami = 'ami-0fd3ed1f806024eca';
     this.placement = this.createPlacementGroup();
 
-    this.createInputs(4);
+    this.createInputs(1);
     this.tgId = this.createTransitGateway();
     this.createTransitGatewayDomain(this.tgId);
   };
@@ -60,12 +64,13 @@ export class MediaproductionStack extends cdk.Stack {
   private createInputs(total: number) {
     // Using ec2.CfnInstance since ec2.Instance does not supply placement group options
     for (let i = 1; i<=total; i++) {
-      new ec2.CfnInstance(this,`Input${i}`, {
+      const instance = new ec2.CfnInstance(this,`Input${i}`, {
         subnetId: this.vpc.selectSubnets().subnetIds[0],
         instanceType: this.instanceType,
         imageId: this.ami,
-        placementGroupName: this.placement.getAtt.name
+        placementGroupName: this.placement.ref
       });
+      this.registerSource(instance, i);
     }
   };
 
@@ -73,48 +78,83 @@ export class MediaproductionStack extends cdk.Stack {
     return new ec2.CfnPlacementGroup(this, 'mediaPlacementGroup',{strategy: 'cluster'});
   };
 
-  private createTransitGateway(): string{
+  private createTransitGateway(): {tgId: string, attachmentId: string} {
     const tg =  new ec2.CfnTransitGateway(this, 'mediaTransitGateway',{
       description: 'TG to allow mDNS',
       multicastSupport: 'enable',
       dnsSupport: 'enable',
     });
 
-    new ec2.CfnTransitGatewayAttachment(this,'mediaTransitGatewayAttachment',{
+    const attachment = new ec2.CfnTransitGatewayAttachment(this,'mediaTransitGatewayAttachment',{
       vpcId: this.vpc.vpcId,
       transitGatewayId: tg.ref,
       subnetIds: this.vpc.selectSubnets().subnetIds,
     });
 
-    return tg.ref
+    return {tgId: tg.ref, attachmentId: attachment.ref}
   };
 
-  private createTransitGatewayDomain(tgId: string) {
+  private createTransitGatewayDomain(tgInfo: transitGatewayInfo) {
     const createTGDomain = new cr.AwsCustomResource(this, 'CreateDomain', {
       onUpdate: { // will also be called for a CREATE event
         service: 'EC2',
         action: 'createTransitGatewayMulticastDomain',
         parameters: {
-          TransitGatewayId: tgId
+          TransitGatewayId: tgInfo.tgId
         },
-        physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()) // Update physical id to always fetch the latest version
+        physicalResourceId: cr.PhysicalResourceId.of('multicastDomain')
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
     });
-    const domainId = createTGDomain.getResponseField('TransitGatewayMulticastDomainId');
+    this.domainId = createTGDomain.getResponseField('TransitGatewayMulticastDomain.TransitGatewayMulticastDomainId');
 
-    new cr.AwsCustomResource(this, 'CreateAssociation', {
-      onUpdate: { // will also be called for a CREATE event
+    const domainAssoc = new cr.AwsCustomResource(this, 'CreateAssociation', {
+      onUpdate: {
         service: 'EC2',
         action: 'associateTransitGatewayMulticastDomain',
         parameters: {
           SubnetIds: this.vpc.selectSubnets().subnetIds,
-          TransitGatewayMulticastDomainId: domainId,
+          TransitGatewayMulticastDomainId: this.domainId,
+          TransitGatewayAttachmentId: tgInfo.attachmentId,
         },
-        physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()) // Update physical id to always fetch the latest version
+        physicalResourceId: cr.PhysicalResourceId.of('domainAssociation')
+      },
+      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
+    });
+    domainAssoc.node.addDependency(createTGDomain);
+    new cdk.CfnOutput(this, 'domainId', { value: this.domainId });
+  };
+
+  private registerSource(instance: ec2.CfnInstance, num: number) {
+    const getNetworkId = new cr.AwsCustomResource(this, `describeInstance${num}`, {
+      onUpdate: {
+        service: 'EC2',
+        action: 'describeNetworkInterfaces',
+        parameters: {
+          Filters: [ `Name=attachment.instance-id,Value=${instance.ref}` ],
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(`getNetwork${num}`)
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
     });
 
+    const networkInterfaceId = getNetworkId.getResponseField('NetworkInterfaceSet.0.NetworkInterfaceId');
+    new cdk.CfnOutput(this, `networkInterface${num}`, { value: networkInterfaceId });
+
+    const source = new cr.AwsCustomResource(this, `sourceRegistration${num}`, {
+      onUpdate: {
+        service: 'EC2',
+        action: 'registerTransitGatewayMulticastGroupSources',
+        parameters: {
+          TransitGatewayMulticastDomainId: this.domainId,
+          GroupIpAddress: '224.0.0.1',
+          NetworkInterfaceIds: [networkInterfaceId]
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(`registerSource${num}`)
+      },
+      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
+    });
+    source.node.addDependency(instance);
+    source.node.addDependency(getNetworkId);
   };
 }
