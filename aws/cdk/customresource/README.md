@@ -1,6 +1,6 @@
-# Welcome to your CDK TypeScript project!
+# CDK Custom Resource Example
 
-This is a blank project for TypeScript development with CDK.
+This CDK project is an example of using Custom Resources.
 
 We created this project using the command:
 
