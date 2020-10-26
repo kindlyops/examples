@@ -131,8 +131,14 @@ export class MediaproductionStack extends cdk.Stack {
         service: 'EC2',
         action: 'describeNetworkInterfaces',
         parameters: {
-          Filters: [ `Name=attachment.instance-id,Value=${instance.ref}` ],
+          Filters: [
+            {
+              Name: 'attachment.instance-id',
+              Values: [ instance.ref ]
+            }
+          ],
         },
+        outputPath: 'NetworkInterfaceSet.0.NetworkInterfaceId',
         physicalResourceId: cr.PhysicalResourceId.of(`getNetwork${num}`)
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
