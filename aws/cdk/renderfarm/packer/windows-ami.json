@@ -1,0 +1,80 @@
+{
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+        "aws_session_token":"{{env `AWS_SESSION_TOKEN`}}",
+        "region": "us-east-1"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "access_key": "{{ user `aws_access_key` }}",
+            "secret_key": "{{ user `aws_secret_key` }}",
+            "region": "{{ user `region` }}",
+            "token": "{{ user `aws_session_token` }}",
+            "source_ami_filter": {
+                "filters": {
+                  "virtualization-type": "hvm",
+                  "name": "Deadline Slave Base Image Windows*",
+                  "root-device-type": "ebs"
+                },
+                "most_recent": true,
+                "owners": "357466774442"
+              },
+            "instance_type": "t3.medium",
+            "communicator": "winrm",
+            "winrm_username": "Administrator",
+            "ami_name": "rdfk-example-{{isotime \"2006-01-02\"}}",
+            "user_data_file": "scripts/bootstrap.txt",
+            "ami_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_type": "gp2",
+                    "volume_size": 200,
+                    "delete_on_termination": true
+                }
+            ],
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_type": "gp2",
+                    "volume_size": 200,
+                    "delete_on_termination": true
+                }
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "scripts/programs.ps1",
+            "destination": "C:\\Users\\Administrator\\programs.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/programs.json",
+            "destination": "C:\\Users\\Administrator\\programs.json"
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "Powershell -NonInteractive -File \"C:\\Users\\Administrator\\programs.ps1\" -json \"C:\\Users\\Administrator\\programs.json\""
+            ]
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "Powershell -NonInteractive -File \"C:\\Users\\Administrator\\ChocoInstall\\chocolatey.ps1\""
+            ]
+        },
+        {
+            "type": "windows-restart"
+        },
+        {
+            "type": "windows-shell",
+            "inline": [
+                "tzutil /s \"US Eastern Standard Time\""
+            ]
+        }
+    ]
+}
