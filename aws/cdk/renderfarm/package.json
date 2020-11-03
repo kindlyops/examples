@@ -12,7 +12,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk",
+    "cdk": "export WAN_CIDR=\"$(curl -s 4.ipquail.com/ip)/32\" && cdk",
     "stage": "stage-deadline --deadlineInstallerURI s3://thinkbox-installers/Deadline/${npm_package_config_deadline_ver}/Linux/DeadlineClient-${npm_package_config_deadline_ver}-linux-x64-installer.run --dockerRecipesURI s3://thinkbox-installers/DeadlineDocker/${npm_package_config_deadline_ver}/DeadlineDocker-${npm_package_config_deadline_ver}.tar.gz --output ${npm_package_config_stage_path}"
   },
    "devDependencies": {

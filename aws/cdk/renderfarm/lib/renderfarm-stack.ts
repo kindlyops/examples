@@ -1,5 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as iam from '@aws-cdk/aws-iam';
 import * as efs from '@aws-cdk/aws-efs';
 import * as rfdk from 'aws-rfdk';
 import * as path from 'path';
@@ -67,10 +69,14 @@ export class RenderfarmStack extends cdk.Stack {
     const workers = new rfdk.deadline.WorkerInstanceFleet(this, 'Workers', {
       vpc: vpc,
       renderQueue: renderQueue,
-      workerMachineImage: new ec2.LookupMachineImage({ name: 'Deadline Worker Base Image Linux 2 10.1.9.2 2020-07-20T210441Z'}),
-      minCapacity: 1,
-      instanceType: new ec2.InstanceType('c5.large'),
-      spotPrice: 0.1344,
+      workerMachineImage: ec2.MachineImage.genericWindows({
+        // Fill in your AMI id here
+        // [cdk.Stack.of(this).region]: 'ami-01b863f0f8fcaa97a',
+        [cdk.Stack.of(this).region]: 'ami-0e6164f420a0898bf',
+      }),
+      minCapacity: 0,
+      instanceType: new ec2.InstanceType('g4dn.xlarge'),
+      spotPrice: 0.5000,
     });
 
     // You can create a filesystem to hold your render assets for the
@@ -88,6 +94,48 @@ export class RenderfarmStack extends cdk.Stack {
     const mountableEfs = new rfdk.MountableEfs(this, {
       filesystem: assetFilesystem,
     });
-    mountableEfs.mountToLinuxInstance(workers.fleet, { location: '/mnt/assets' })
+    //mountableEfs.mountToLinuxInstance(workers.fleet, { location: '/mnt/assets' })
+    const bucket = new s3.Bucket(this, 'rfdkBucket', {
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      blockPublicAccess: {
+          blockPublicAcls: true,
+          blockPublicPolicy: true,
+          ignorePublicAcls: true,
+          restrictPublicBuckets: true,
+      },
+      publicReadAccess: false,
+    });
+    const statement = new iam.PolicyStatement({
+      actions: ['s3:*'],
+      effect: iam.Effect.DENY,
+      resources: [bucket.bucketArn, `${bucket.bucketArn}/*`],
+      principals: [new iam.AnyPrincipal],
+    });
+    statement.addCondition('Bool', {"aws:SecureTransport": "false"});
+    bucket.addToResourcePolicy(statement);
+
+    const artistWorkstation = new ec2.Instance(this, 'ArtistInstance', {
+      vpc: vpc,
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PUBLIC,
+      },
+      // Create a keypair first to obtain the windows password
+      keyName: process.env.AWS_KEYPAIR || undefined,
+      instanceType: new ec2.InstanceType('g4dn.xlarge'),
+      machineImage: ec2.MachineImage.genericWindows({
+        [cdk.Stack.of(this).region]: 'ami-0e6164f420a0898bf',
+      }),
+    });
+    bucket.grantReadWrite(artistWorkstation);
+
+    const securityGroup = new ec2.SecurityGroup(this, 'ArtistSecurityGroup', {vpc: vpc});
+    // Use your WAN CIDR for allowed ingress
+    const WAN_CIDR = process.env.WAN_CIDR || '127.0.0.1/32'
+    securityGroup.connections.allowFrom(ec2.Peer.ipv4(WAN_CIDR), ec2.Port.tcp(3389), 'Allow from artist remote location');
+    artistWorkstation.addSecurityGroup(securityGroup);
+    renderQueue.connections.allowFrom(securityGroup, new ec2.Port({protocol: ec2.Protocol.ALL, stringRepresentation: '0-65000'}));
+    new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName })
+    new cdk.CfnOutput(this, 'ArtistInstanceIP', { value: artistWorkstation.instancePublicIp })
+
   }
 }
