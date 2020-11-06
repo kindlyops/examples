@@ -1,0 +1,29 @@
+{
+    "config": {
+        "downloadLocation": "c:\\Software"
+     },
+    "software": [
+    {
+        "name": "chocolatey",
+        "description" : "Installation of chocolatey",
+        "url": "https://chocolatey.org/install.ps1",
+        "arguments" : "",
+        "path": "C:\\Users\\Administrator\\ChocoInstall",
+        "cookie": null,
+        "downloadOnlyTo" : "C:\\Users\\Administrator\\ChocoInstall\\",
+        "type" : ".ps1",
+        "executeAfter" : null
+    },
+    {
+        "name": "Awscli",
+        "description" : "Aws cli for Windows",
+        "url": "https://s3.amazonaws.com/aws-cli/AWSCLI64.msi",
+        "arguments" : "/qn",
+        "path": "C:\\Program Files\\Amazon\\AWSCLI",
+        "cookie": null,
+        "downloadOnlyTo" : null,
+        "type" : null,
+        "executeAfter" : null
+    }
+    ]
+}
