@@ -1,0 +1,40 @@
+name: update
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - renovate.js
+      - .github/workflows/update.yml
+  schedule:
+    - cron: "19 */3 * * *"
+jobs:
+  renovate:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 2
+      # this is tibdex/github-app-token v1.3, pinned to the commit SHA for security
+      # - uses: tibdex/github-app-token@36464acb844fc53b9b8b2401da68844f6b05ebb0
+      #   id: generate-token
+      #   with:
+      #     app_id: ${{ secrets.AUTH_FOR_GITHUB_APP_ID }}
+      #     private_key: ${{ secrets.AUTH_FOR_GITHUB_PRIVATE_KEY }}
+      - uses: ./.github/actions/appauth
+        id: generate-token
+        with:
+          app_id: ${{ secrets.AUTH_FOR_GITHUB_APP_ID }}
+          private_key: ${{ secrets.AUTH_FOR_GITHUB_PRIVATE_KEY }}
+      - name: renovate
+        uses: docker://renovate/renovate:latest@sha256:e04b0e8b117776392705ce17cb206cfef3114d85670d47373b8eece6eb4fd148
+        env:
+          RENOVATE_REPOSITORIES: kindlyops/kindlyops
+          # # https://github.com/renovatebot/renovate/blob/a2b267137005458eca16a39482da458e2ee4e819/lib/util/http/auth.ts#L20
+          RENOVATE_TOKEN: x-access-token:${{ steps.generate-token.outputs.token }}
+          RENOVATE_GITAUTHOR: "Renovate Bot <bot@renovate.com>"
+          RENOVATE_USERNAME: renovatebot
+          RENOVATE_ONBOARDING: false
+          RENOVATE_CONFIG_FILE: renovate.js
+          RENOVATE_LOGLEVEL: warn
+          RENOVATE_TRUSTLEVEL: high
