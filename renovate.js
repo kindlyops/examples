@@ -13,7 +13,6 @@ module.exports = {
   requireConfig: false,
   platform: "github",
   reviewersFromCodeOwners: true,
-  repositories: ["kindlyops/examples"],
   enabledManagers: ["github-actions", "npm"],
   "github-actions": {
     fileMatch: ["^\\.github/workflows/[^/]+\\.ya?ml$"],

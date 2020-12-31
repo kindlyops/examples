@@ -29,7 +29,7 @@ jobs:
       - name: renovate
         uses: docker://renovate/renovate:latest@sha256:f7208e7e52e9ee60f2c3bc12141fad50664947c2aec2451e10d668fd524d3c7c
         env:
-          RENOVATE_REPOSITORIES: kindlyops/kindlyops
+          RENOVATE_REPOSITORIES: kindlyops/examples
           # # https://github.com/renovatebot/renovate/blob/a2b267137005458eca16a39482da458e2ee4e819/lib/util/http/auth.ts#L20
           RENOVATE_TOKEN: x-access-token:${{ steps.generate-token.outputs.token }}
           RENOVATE_GITAUTHOR: "Renovate Bot <bot@renovate.com>"
