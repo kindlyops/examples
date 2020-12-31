@@ -44,7 +44,7 @@ function handleError(error) {
   return;
 }
 
-main().then(handle).catch(handle);
+main().then(handleSuccess).catch(handleError);
 
 
 /***/ }),
