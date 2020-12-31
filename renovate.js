@@ -14,7 +14,7 @@ module.exports = {
   platform: "github",
   reviewersFromCodeOwners: true,
   repositories: ["kindlyops/examples"],
-  enabledManagers: ["github-actions", "npm", "python", "ruby"],
+  enabledManagers: ["github-actions", "npm"],
   "github-actions": {
     fileMatch: ["^\\.github/workflows/[^/]+\\.ya?ml$"],
     pinDigests: true,
