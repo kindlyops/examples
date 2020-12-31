@@ -34,12 +34,12 @@ async function main() {
 }
 
 function handleSuccess(token) {
-  console.log("::set-output name=token::%s", result);
+  core.setOutput('token', token);
   return;
 }
 
 function handleError(error) {
-  console.log("Error retrieving token: %o", error);
+  core.setFailed(error.message);
   return;
 }
 
