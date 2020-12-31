@@ -2,8 +2,7 @@
 
 const { createAppAuth } = require("@octokit/auth-app");
 const { Octokit } = require("@octokit/rest");
-
-const { core } = require("@actions/core");
+const core = require("@actions/core");
 
 async function main() {
 

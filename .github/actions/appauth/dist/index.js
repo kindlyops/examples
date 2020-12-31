@@ -9,8 +9,7 @@ module.exports =
 
 const { createAppAuth } = __webpack_require__(7541);
 const { Octokit } = __webpack_require__(5375);
-
-const { core } = __webpack_require__(2186);
+const core = __webpack_require__(2186);
 
 async function main() {
 
