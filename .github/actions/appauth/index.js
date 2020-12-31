@@ -24,10 +24,16 @@ async function main() {
   });
 
   const installationAuth = await app({ installationId, type: "installation" });
-  console.log(`::set-output name=token::${installationAuth.token}`);
+  return installationAuth.token;
 }
 
-function handle(result) {
+function handleSuccess(token) {
+  console.log("::set-output name=token::%s", result);
+  return;
+}
+
+function handleError(error) {
+  console.log("Error retrieving token: %o", error);
   return;
 }
 
