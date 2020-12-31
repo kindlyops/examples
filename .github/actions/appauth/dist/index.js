@@ -15,7 +15,7 @@ async function main() {
 
   const botId = core.getInput('app_id');
   const botKey = core.getInput('private_key');
-  const [owner, repo ] = env.GITHUB_REPOSITORY.split("/");
+  const [owner, repo ] = process.env.GITHUB_REPOSITORY.split("/");
   const app = createAppAuth({ appId: botId, privateKey: botKey });
   const authApp = await app({ type: "app" });
   const octo = new Octokit({
