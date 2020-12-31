@@ -27,6 +27,7 @@ async function main() {
 }
 
 function handleSuccess(token) {
+  core.setSecret(token);
   core.setOutput('token', token);
   return;
 }
