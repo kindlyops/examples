@@ -16,19 +16,19 @@
     "stage": "stage-deadline --deadlineInstallerURI s3://thinkbox-installers/Deadline/${npm_package_config_deadline_ver}/Linux/DeadlineClient-${npm_package_config_deadline_ver}-linux-x64-installer.run --dockerRecipesURI s3://thinkbox-installers/DeadlineDocker/${npm_package_config_deadline_ver}/DeadlineDocker-${npm_package_config_deadline_ver}.tar.gz --output ${npm_package_config_stage_path}"
   },
    "devDependencies": {
-    "@aws-cdk/assert": "1.66.0",
+    "@aws-cdk/assert": "1.82.0",
     "@types/jest": "26.0.15",
     "@types/node": "10.17.27",
     "jest": "26.6.1",
     "ts-jest": "26.4.2",
-    "aws-cdk": "1.66.0",
+    "aws-cdk": "1.82.0",
     "ts-node": "8.10.2",
     "typescript": "3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/core": "1.66.0",
-    "@aws-cdk/aws-ec2": "1.66.0",
-    "@aws-cdk/aws-efs": "1.66.0",
+    "@aws-cdk/core": "1.82.0",
+    "@aws-cdk/aws-ec2": "1.82.0",
+    "@aws-cdk/aws-efs": "1.82.0",
     "aws-rfdk": "0.18.1",
     "source-map-support": "0.5.19"
   }
