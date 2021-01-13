@@ -13,12 +13,16 @@ module.exports = {
   requireConfig: false,
   platform: "github",
   reviewersFromCodeOwners: true,
-  enabledManagers: ["github-actions", "npm"],
+  enabledManagers: ["github-actions", "npm", "gomod"],
   "github-actions": {
     fileMatch: ["^\\.github/workflows/[^/]+\\.ya?ml$"],
     pinDigests: true,
     labels: ["dependencies", "github"],
   },
+  gomod: {
+      labels: ["dependencies", "go"]
+  },
+  postUpdateOptions: ["gomodTidy"],
   npm: {
     labels: ["dependencies", "javascript"],
   },
