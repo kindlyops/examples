@@ -33,8 +33,8 @@ jobs:
           RENOVATE_REPOSITORIES: kindlyops/examples
           # # https://github.com/renovatebot/renovate/blob/a2b267137005458eca16a39482da458e2ee4e819/lib/util/http/auth.ts#L20
           RENOVATE_TOKEN: x-access-token:${{ steps.generate-token.outputs.token }}
-          RENOVATE_GITAUTHOR: "Kindly Machine Bot <support@kindlyops.com>"
-          RENOVATE_USERNAME: kindlymachine
+          RENOVATE_GITAUTHOR: "KindlyMachine <support@kindlyops.com>"
+          RENOVATE_USERNAME: kindlymachine[bot]
           RENOVATE_ONBOARDING: false
           RENOVATE_CONFIG_FILE: renovate.js
           RENOVATE_LOGLEVEL: debug

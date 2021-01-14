@@ -8,7 +8,6 @@ module.exports = {
   prCreation: "immediate",
   pinDigests: true,
   onboarding: false,
-  gitAuthor: "Kindly Machine Bot <support@kindlyops.com>",
   logLevel: "debug",
   requireConfig: false,
   platform: "github",
