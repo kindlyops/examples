@@ -11,6 +11,7 @@ module.exports = {
   logLevel: "debug",
   requireConfig: false,
   platform: "github",
+  gitAuthor: "KindlyMachine <support@kindlyops.com>",
   dependencyDashboard: true,
   reviewersFromCodeOwners: true,
   enabledManagers: ["github-actions", "npm", "gomod"],
