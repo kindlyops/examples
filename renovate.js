@@ -9,7 +9,6 @@ module.exports = {
   pinDigests: true,
   onboarding: false,
   gitAuthor: "Renovate Bot <bot@renovateapp.com>",
-  logLevel: "debug",
   requireConfig: false,
   platform: "github",
   reviewersFromCodeOwners: true,
@@ -28,8 +27,9 @@ module.exports = {
   },
   packageRules: [
     {
-      packageNames: ["gatsby"],
-      schedule: ["before 3am on monday"],
+      packagePatterns: [ "constructs" ],
+      groupName: "aws-cdk monorepo",
+      schedule: ["on the first day of the month"],
     },
   ],
 };

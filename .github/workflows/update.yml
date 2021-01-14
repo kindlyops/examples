@@ -36,5 +36,5 @@ jobs:
           RENOVATE_USERNAME: renovatebot
           RENOVATE_ONBOARDING: false
           RENOVATE_CONFIG_FILE: renovate.js
-          RENOVATE_LOGLEVEL: warn
+          RENOVATE_LOGLEVEL: debug
           RENOVATE_TRUSTLEVEL: high
