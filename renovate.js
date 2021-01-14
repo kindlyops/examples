@@ -9,6 +9,7 @@ module.exports = {
   pinDigests: true,
   onboarding: false,
   gitAuthor: "Renovate Bot <bot@renovateapp.com>",
+  logLevel: "debug",
   requireConfig: false,
   platform: "github",
   reviewersFromCodeOwners: true,
