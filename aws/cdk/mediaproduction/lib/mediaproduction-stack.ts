@@ -1,13 +1,20 @@
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as imageBuilder from '@aws-cdk/aws-imagebuilder';
 import * as cr from '@aws-cdk/custom-resources';
 import { Reference } from '@aws-cdk/core';
+
+import { readFileSync } from 'fs';
+import { join } from 'path'
 
 interface transitGatewayInfo {tgId: string, attachmentId: string};
 
 export class MediaproductionStack extends cdk.Stack {
   private vpc: ec2.Vpc;
   private ami: string;
+  private domain: cdk.CustomResource;
   private tgId: transitGatewayInfo;
   private instanceType: string;
   private placement: ec2.CfnPlacementGroup;
@@ -21,10 +28,74 @@ export class MediaproductionStack extends cdk.Stack {
     this.ami = 'ami-0fd3ed1f806024eca';
     this.placement = this.createPlacementGroup();
 
-    this.createInputs(1);
+
     this.tgId = this.createTransitGateway();
-    this.createTransitGatewayDomain(this.tgId);
+    this.domain = this.createTransitGatewayDomain(this.tgId);
+    this.createInputs(1);
+    // Create Image Builder Pipeline for creating Windows NICE instances
+
+    // First create a new component to install Chocolatey
+    const installChocolatey = new imageBuilder.CfnComponent(this, 'Install Build Tools', {
+      name: 'Install Chocolatey',
+      platform: 'Windows',
+      version: '1.0.0',
+      data: readFileSync(
+        join(__dirname, '../imageBuilderComponents/installChocolatey.yaml'),
+      ).toString(),
+    });
+
+    // Then create an Image Recipe using NICE as the base image
+
+    const niceWindowsRecipe = new imageBuilder.CfnImageRecipe(this, 'WindowsNICEBaseAMIRecipe', {
+      name: 'Windows NICE Base AMI Recipe',
+      version: '1.0.0',
+      components: [{ componentArn: installChocolatey.attrArn,},],
+      parentImage: new ec2.LookupMachineImage({
+        name: 'DCV-Server2019-2020-0-8428-NVIDIA-442-49-g4 *', owners: ['amazon']
+      }).getImage(this).imageId,
+    });
+
+    // Next create the role for the builder
+    const builderRole = new iam.Role(this, 'WindowsBuilderRole', {
+      roleName: 'WindowsBuilderRole',
+      assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
+    });
+    builderRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
+    );
+    builderRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName(
+        'EC2InstanceProfileForImageBuilder',
+      ),
+    );
+
+    // Create a new instance profile and attach the role
+    const builderInstanceProfile = new iam.CfnInstanceProfile(this,'BuilderInstanceProfile', {
+        instanceProfileName: 'BuilderInstanceProfile',
+        roles: [builderRole.roleName],
+    });
+
+    // Create security group for the image builder pipeline
+    const builderSecurityGroup = new ec2.SecurityGroup(this, 'BuilderSecurityGroup', {
+      vpc: this.vpc,
+    });
+    // Create infra configuration
+    const imageBuilderInfraConfig = new imageBuilder.CfnInfrastructureConfiguration(this,'WindowsImageBuilder', {
+        name: 'Windows Image Builder',
+        instanceTypes: ['t3.large'],
+        instanceProfileName: builderInstanceProfile.instanceProfileName!,
+        subnetId: this.vpc.selectSubnets().subnetIds[0],
+        securityGroupIds: [builderSecurityGroup.securityGroupId]
+    });
+
+    const imageBuilderPipeline = new imageBuilder.CfnImagePipeline(this, 'WindowsNICEImage', {
+      name: 'Windows NICE Image Pipeline',
+      imageRecipeArn: niceWindowsRecipe.attrArn,
+      infrastructureConfigurationArn: imageBuilderInfraConfig.attrArn,
+    });
+
   };
+
 
   private createVPC(): ec2.Vpc {
     return new ec2.Vpc(this, 'mediaVPC', {
@@ -95,7 +166,35 @@ export class MediaproductionStack extends cdk.Stack {
   };
 
   private createTransitGatewayDomain(tgInfo: transitGatewayInfo) {
-    const createTGDomain = new cr.AwsCustomResource(this, 'CreateDomain', {
+
+    // defines an AWS Lambda resource
+    const gatewayOnEvent = new lambda.Function(this, 'onEventHanlder', {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      code: lambda.Code.fromAsset('lambda'),
+      handler: 'customSDKLambda.transitGatewayOnEvent',
+    });
+    const gatewayIsComplete = new lambda.Function(this, 'isCompleteHanlder', {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      code: lambda.Code.fromAsset('lambda'),
+      handler: 'customSDKLambda.transitGatewayIsComplete'
+    });
+
+    const provider = new cr.Provider(this, 'TransitGatewayProvider',{
+      onEventHandler: gatewayOnEvent,
+      isCompleteHandler: gatewayIsComplete,
+    });
+
+    const domainResource = new cdk.CustomResource(this, 'GatewayDomainResource', {
+      serviceToken: provider.serviceToken,
+      properties: {
+        TransitGatewayId: tgInfo.tgId,
+        PhysicalResourceId: 'GatewayDomainResource'
+      }
+    });
+    domainResource.node.addDependency(provider);
+    this.domainId = domainResource.getAtt('DomainId').toString();
+  
+   /* const createTGDomain = new cr.AwsCustomResource(this, 'CreateDomain', {
       onUpdate: { // will also be called for a CREATE event
         service: 'EC2',
         action: 'createTransitGatewayMulticastDomain',
@@ -107,7 +206,7 @@ export class MediaproductionStack extends cdk.Stack {
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
     });
     this.domainId = createTGDomain.getResponseField('TransitGatewayMulticastDomain.TransitGatewayMulticastDomainId');
-
+    */
     const domainAssoc = new cr.AwsCustomResource(this, 'CreateAssociation', {
       onUpdate: {
         service: 'EC2',
@@ -121,8 +220,10 @@ export class MediaproductionStack extends cdk.Stack {
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
     });
-    domainAssoc.node.addDependency(createTGDomain);
+    domainAssoc.node.addDependency(domainResource);
     new cdk.CfnOutput(this, 'domainId', { value: this.domainId });
+
+    return domainResource;
   };
 
   private registerSource(instance: ec2.CfnInstance, num: number) {
@@ -138,13 +239,13 @@ export class MediaproductionStack extends cdk.Stack {
             }
           ],
         },
-        outputPath: 'NetworkInterfaceSet.0.NetworkInterfaceId',
+        outputPath: 'NetworkInterfaces.0.NetworkInterfaceId',
         physicalResourceId: cr.PhysicalResourceId.of(`getNetwork${num}`)
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
     });
 
-    const networkInterfaceId = getNetworkId.getResponseField('NetworkInterfaceSet.0.NetworkInterfaceId');
+    const networkInterfaceId = getNetworkId.getResponseField('NetworkInterfaces.0.NetworkInterfaceId');
     new cdk.CfnOutput(this, `networkInterface${num}`, { value: networkInterfaceId });
 
     const source = new cr.AwsCustomResource(this, `sourceRegistration${num}`, {
@@ -160,6 +261,7 @@ export class MediaproductionStack extends cdk.Stack {
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE})
     });
+    source.node.addDependency(this.domain);
     source.node.addDependency(instance);
     source.node.addDependency(getNetworkId);
   };
