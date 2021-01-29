@@ -1,0 +1,22 @@
+{
+  "availability-zones:account=211129858938:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ],
+  "ssm:account=211129858938:parameterName=/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended/image_name:region=us-east-1": "amzn2-ami-ecs-hvm-2.0.20210121-arm64-ebs",
+  "ami:account=211129858938:filters.image-type.0=machine:filters.name.0=amzn2-ami-ecs-hvm-2.0.20210121-arm64-ebs:filters.state.0=available:region=us-east-1": "ami-0eb16120d9ca650c0",
+  "availability-zones:account=211129858938:region=us-west-2": [
+    "us-west-2a",
+    "us-west-2b",
+    "us-west-2c",
+    "us-west-2d",
+    "us-west-2-lax-1a",
+    "us-west-2-lax-1b"
+  ],
+  "ssm:account=211129858938:parameterName=/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended/image_name:region=us-west-2": "amzn2-ami-ecs-hvm-2.0.20210121-arm64-ebs",
+  "ami:account=211129858938:filters.image-type.0=machine:filters.name.0=amzn2-ami-ecs-hvm-2.0.20210121-arm64-ebs:filters.state.0=available:region=us-west-2": "ami-07447c34613d3f466"
+}
