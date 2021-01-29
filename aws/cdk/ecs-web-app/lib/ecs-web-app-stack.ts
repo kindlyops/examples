@@ -3,17 +3,10 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as ecsPatterns from '@aws-cdk/aws-ecs-patterns';
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as cert from '@aws-cdk/aws-certificatemanager';
 import * as route53 from '@aws-cdk/aws-route53';
-
-interface AmiObj {
-  schema_version: number;
-  image_name: string;
-  image_id: string;
-  os: string;
-  ecs_runtime_version: string;
-  ecs_agent_version: string
-}
+import * as path from 'path';
 
 export class EcsWebAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -85,6 +78,17 @@ export class EcsWebAppStack extends cdk.Stack {
       vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
     });
 
+    // cdk does not yet provide a way to specify the equivalent of
+    // docker buildx --platform linux/arm64
+    // or manually creating manifests. However, this is running on graviton2
+    // despite the build warnings.
+    const asset = new DockerImageAsset(this, 'KindlyNodejsDemo', {
+      directory: path.join(__dirname, '../nodejs-sample'),
+      buildArgs: {
+        ARCH: 'arm64v8/',
+      }
+    });
+
     const ec2Service = new ecsPatterns.ApplicationLoadBalancedEc2Service(this, 'Service', {
       cluster: cluster,
       certificate: existingCert,
@@ -94,10 +98,10 @@ export class EcsWebAppStack extends cdk.Stack {
       memoryReservationMiB: 128,
       cpu: 128,
       taskImageOptions: {
-        image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample"),
+          image: ecs.ContainerImage.fromDockerImageAsset(asset),
       },
     });
-    ec2Service.cluster.hasEc2Capacity
+
     // Configure auto scaling
     const scalableTarget = ec2Service.service.autoScaleTaskCount({
       minCapacity: 1,

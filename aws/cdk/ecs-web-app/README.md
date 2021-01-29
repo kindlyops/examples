@@ -14,6 +14,9 @@ This will require the following environment variables to be exported:
     export EXISTING_CERTIFICATE_ARN='your:cert:arn'
     export EXISTING_HOSTED_ZONE='YOURXYZZONEID'
 
+You will also need a docker daemon with multi-arch support enabled and a
+multi-arch builder provisioned. Try `docker buildx ls` to see your builders.
+
 ## Build and Deploy
 
     npm i
