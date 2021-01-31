@@ -29,6 +29,10 @@ module.exports = {
   },
   packageRules: [
     {
+      packageNames: ["*"],
+      schedule: ["on the first day of the month"],
+    },
+    {
       packagePatterns: [ "constructs" ],
       groupName: "aws-cdk monorepo",
       schedule: ["on the first day of the month"],
