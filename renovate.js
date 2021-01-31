@@ -37,5 +37,9 @@ module.exports = {
       groupName: "aws-cdk monorepo",
       schedule: ["on the first day of the month"],
     },
+    {
+      updateTypes: ['digest', 'patch', 'minor'],
+      schedule: ['before 3am on monday'],
+    }
   ],
 };
