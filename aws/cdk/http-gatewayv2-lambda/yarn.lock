@@ -1002,12 +1002,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vendia/serverless-express@4.0.0-rc.7":
-  version "4.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@vendia/serverless-express/-/serverless-express-4.0.0-rc.7.tgz#845581a1c1bbf9095fa173d28eba59f66e42ce6a"
-  integrity sha512-PRFCZIw36ohl7Z7ltYpIWGKxIdDm06ozgXFiiB9Vkp9zGsmbiyo3jBJ7E77OwJxY007GbY3+s/7QAgYFdgLnOA==
-  dependencies:
-    type-is "^1.6.16"
+"@vendia/serverless-express@4.0.0-rc.12":
+  version "4.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/@vendia/serverless-express/-/serverless-express-4.0.0-rc.12.tgz#057b9689aa08b3dce3366177302077721d4905f5"
+  integrity sha512-tOPJTVkFPln1j/qvnhZf+VD0rvKAarQ2lvf5UtIP+/kMmUmalLmOFmqWD31ahlq43lIS87IslS2+S3KS9raBYw==
 
 abab@^2.0.3:
   version "2.0.5"
@@ -4900,7 +4898,7 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-type-is@^1.6.16, type-is@~1.6.17, type-is@~1.6.18:
+type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
   resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.18.tgz#4e552cd05df09467dcbc4ef739de89f2cf37c131"
   integrity sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==
