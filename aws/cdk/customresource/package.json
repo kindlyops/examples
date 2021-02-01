@@ -12,18 +12,18 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.84.0",
+    "@aws-cdk/assert": "1.87.1",
     "@types/jest": "26.0.20",
     "@types/node": "10.17.27",
     "jest": "26.4.2",
     "ts-jest": "26.5.0",
-    "aws-cdk": "1.84.0",
+    "aws-cdk": "1.87.1",
     "ts-node": "8.10.2",
     "typescript": "4.1.3"
   },
   "dependencies": {
-    "@aws-cdk/core": "1.84.0",
-    "@aws-cdk/custom-resources": "1.84.0",
+    "@aws-cdk/core": "1.87.1",
+    "@aws-cdk/custom-resources": "1.87.1",
     "source-map-support": "0.5.19"
   }
 }
