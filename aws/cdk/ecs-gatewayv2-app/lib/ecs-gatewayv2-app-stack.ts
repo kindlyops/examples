@@ -94,27 +94,27 @@ export class EcsGatewayv2AppStack extends cdk.Stack {
       }
     });
 
+
     const namespace = new servicediscovery.PrivateDnsNamespace(this, 'Namespace', {
       name: `sample-ecs-apigw-app.${process.env.EXISTING_DOMAIN}`,
       vpc,
     });
 
-    const serviceDiscovery = namespace.createService('ServiceDiscovery');
+    const serviceD = namespace.createService('ServiceDiscovery',{
+      dnsRecordType: servicediscovery.DnsRecordType.A,
+      dnsTtl: cdk.Duration.seconds(30),
+    });
     const vpcLink = new apigatewayv2.VpcLink(this, 'VpcLink', { vpc });
 
-    const apiIntegration = new integration.HttpServiceDiscoveryIntegration(
-      {
-        vpcLink: vpcLink,
-        service: serviceDiscovery
-      }
-    );
-    const httpEndpoint = new apigatewayv2.HttpApi(this, 'HttpApi', {
-      defaultIntegration: apiIntegration
-    });
+   // const apiIntegration = new integration.HttpServiceDiscoveryIntegration(
+   //   {
+   //     vpcLink: vpcLink,
+   //     service: serviceDiscovery
+   //   }
+   // );
 
     const taskDefinition = new ecs.Ec2TaskDefinition(this ,'TaskDefinition', {
       networkMode: ecs.NetworkMode.AWS_VPC,
-//      domainName: `arm-sample-ecs-app.${process.env.EXISTING_DOMAIN}`,
     });
 
     const containerDefinition = new ecs.ContainerDefinition(this, 'Container' , {
@@ -127,15 +127,29 @@ export class EcsGatewayv2AppStack extends cdk.Stack {
         streamPrefix: 'example-apigw-ecs'
       })
     });
-
+    containerDefinition.addPortMappings({
+      containerPort: 80,
+      hostPort: 80,
+      protocol: ecs.Protocol.TCP
+    });
     const service = new ecs.Ec2Service(this, 'Service', {
       cluster: cluster,
       taskDefinition: taskDefinition,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE },
       cloudMapOptions: {
-        cloudMapNamespace: namespace
+        cloudMapNamespace: namespace,
+        dnsRecordType: servicediscovery.DnsRecordType.A,
+        dnsTtl: cdk.Duration.seconds(30),
       }
     });
+    if(service.cloudMapService){
+      const httpEndpoint = new apigatewayv2.HttpApi(this, 'HttpApi', {
+        defaultIntegration: new integration.HttpServiceDiscoveryIntegration({
+          vpcLink: vpcLink,
+          service: serviceD
+        })
+      });
+    }
 
   }
 }
