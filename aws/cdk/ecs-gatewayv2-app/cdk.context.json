@@ -1,0 +1,12 @@
+{
+  "availability-zones:account=211129858938:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ],
+  "ssm:account=211129858938:parameterName=/aws/service/ecs/optimized-ami/amazon-linux-2/arm64/recommended/image_name:region=us-east-1": "amzn2-ami-ecs-hvm-2.0.20210121-arm64-ebs",
+  "ami:account=211129858938:filters.image-type.0=machine:filters.name.0=amzn2-ami-ecs-hvm-2.0.20210121-arm64-ebs:filters.state.0=available:region=us-east-1": "ami-0eb16120d9ca650c0"
+}
