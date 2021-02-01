@@ -29,7 +29,7 @@
     "@aws-cdk/aws-lambda": "1.85.0",
     "@aws-cdk/aws-lambda-nodejs": "1.85.0",
     "@aws-cdk/core": "1.85.0",
-    "@vendia/serverless-express": "4.0.0-rc.12",
+    "@vendia/serverless-express": "4.0.0-rc.13",
     "express": "4.17.1",
     "express-http-proxy": "1.6.2",
     "source-map-support": "0.5.19"
