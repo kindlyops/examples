@@ -11,5 +11,6 @@ Various examples of how to get things done.
   - Deploying Kali Linux as an EC2 using SSM [without SSH](aws/cloudformation/ec2/)
 - [IAM](aws/iam/)
   - Testing IAM Policies
-- [JWT](jwt/)
+- [JWT](jwt1/)
   - Working with auth tokens
+  
