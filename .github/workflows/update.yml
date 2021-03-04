@@ -7,7 +7,7 @@ on:
       - renovate.js
       - .github/workflows/update.yml
   schedule:
-    - cron: "19 */3 * * *"
+    - cron: "0 6 * * 1"
 jobs:
   renovate:
     runs-on: ubuntu-18.04

@@ -38,6 +38,10 @@ module.exports = {
       schedule: ["on the first day of the month"],
     },
     {
+      packageNames: ['renovate'],
+      minor: { enabled: false },
+    },
+    {
       updateTypes: ['digest', 'patch', 'minor'],
       schedule: ['before 3am on monday'],
     }
