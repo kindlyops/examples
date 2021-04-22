@@ -1,0 +1,65 @@
+Resources:
+  LogsKinesisKeyAA1E030E:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action:
+              - kms:Create*
+              - kms:Describe*
+              - kms:Enable*
+              - kms:List*
+              - kms:Put*
+              - kms:Update*
+              - kms:Revoke*
+              - kms:Disable*
+              - kms:Get*
+              - kms:Delete*
+              - kms:ScheduleKeyDeletion
+              - kms:CancelKeyDeletion
+              - kms:GenerateDataKey
+              - kms:TagResource
+              - kms:UntagResource
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - :iam::211129858938:root
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              Service: logs.us-west-2.amazonaws.com
+            Resource: "*"
+        Version: "2012-10-17"
+      EnableKeyRotation: true
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: my-stack-dev/LogsKinesisKey/Resource
+  LogGroupF5B46931:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - LogsKinesisKeyAA1E030E
+          - Arn
+      LogGroupName: /kindlyops/examples/kms-encrypted-log-group
+      RetentionInDays: 7
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: my-stack-dev/LogGroup/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAAEzWKQQ6CMBBFz8K+DG3UvQkLF7qCE5AyklLpmJlWY5reXRrj6v289w0YrUE35+ktrZ19ly0xQh7jZL3qKUjkZKPq72FAocQWi6rf7DeBfMVPTTuKetCymxstF6b0rPq/Sykq0IywSvcyRzAnODSrONdyCtFtCMOPXyUgd4COAAAA
+    Metadata:
+      aws:cdk:path: my-stack-dev/CDKMetadata/Default
