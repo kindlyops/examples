@@ -32,7 +32,7 @@ export class EC2Stack extends Stack {
     const instance = new ec2.Instance(this, 'Instance', {
         instanceName: 'ALOHA',
         vpc: vpc,
-        instanceType: ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE24),
+        instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.LARGE),
         machineImage: ec2.MachineImage.latestAmazonLinux({
             generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
         }),

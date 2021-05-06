@@ -30,3 +30,7 @@ EOF
 # Start and configure docker
 service docker start
 systemctl enable docker
+
+# add ssm-user and ec2-user to docker group for convenience
+usermod -aG docker ssm-user
+usermod -aG docker ec2-user

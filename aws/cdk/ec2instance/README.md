@@ -3,8 +3,19 @@
 Sometimes you need an oldschool EC2 instance with specific permissions for a
 temporary task. Save some time and use CDK!
 
-To connect with SSM after provisioning the stack:
+## connecting to the instance with SSM
+
+```bash
+aws cloudformation list-exports
+# note instance ID
+aws ssm start-session --target "${_instance}"
 ```
+
+## silly ssh stuff
+
+To connect with SSM after provisioning the stack:
+
+```bash
 # Create temp key
 echo -e 'y\n' | ssh-keygen -t rsa -f /tmp/temp_ssh -N '' >/dev/null 2>&1
 
