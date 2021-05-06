@@ -26,9 +26,9 @@ aws ec2-instance-connect send-ssh-public-key \
 
 # connect over ssh using ssm session as proxy, forwarding ssh credentials to access github
 ssh -i /tmp/temp_ssh \
- -K \
   -o "UserKnownHostsFile=/dev/null" \
   -o "StrictHostKeyChecking=no" \
+  -o "ForwardAgent=yes" \
   -o ProxyCommand="aws ssm start-session --target %h --document AWS-StartSSHSession --parameters portNumber=%p --region=us-west-2" \
   "ec2-user@${_instance}"
 ```
