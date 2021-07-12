@@ -35,7 +35,7 @@
     "projen": "^0.17.62",
     "standard-version": "^9",
     "ts-jest": "^26.5.5",
-    "ts-node": "^9.1.1",
+    "ts-node": "10.1.0",
     "typescript": "^4.2.4"
   },
   "dependencies": {
