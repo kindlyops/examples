@@ -49,6 +49,9 @@ export class EC2Stack extends Stack {
     instance.role.addManagedPolicy(
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
     );
+    instance.role.addManagedPolicy(
+        iam.ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy')
+    );
 
   }
 }

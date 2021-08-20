@@ -5,6 +5,7 @@ set -euo pipefail
 yum update -y && yum upgrade -y
 yum install -y \
   amazon-ecr-credential-helper \
+  amazon-cloudwatch-agent \
   docker-19.03.13ce-1.amzn2 \
   gcc \
   gcc-c++ \
