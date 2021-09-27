@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+Object {
+  "Resources": Object {
+    "StackSet": Object {
+      "DependsOn": Array [
+        "configRole2A27D4AE",
+        "executionRole2F5D1D4F",
+      ],
+      "Properties": Object {
+        "Parameters": Array [
+          Object {
+            "ParameterKey": "loggingRegion",
+            "ParameterValue": Object {
+              "Ref": "AWS::Region",
+            },
+          },
+        ],
+        "PermissionModel": "SELF_MANAGED",
+        "StackInstancesGroup": Array [
+          Object {
+            "DeploymentTargets": Object {
+              "Accounts": Array [
+                Object {
+                  "Ref": "AWS::AccountId",
+                },
+              ],
+            },
+            "Regions": Array [
+              "us-west-1",
+              "us-west-2",
+              "us-east-1",
+              "us-east-2",
+            ],
+          },
+        ],
+        "StackSetName": "TopicStackSet",
+        "TemplateBody": "
+        Parameters:
+          loggingRegion:
+            Type: String
+        Resources:
+          Topic:
+            Type: AWS::SNS::Topic
+            Properties:
+              TopicName: !Sub events-to-\${loggingRegion}
+      ",
+      },
+      "Type": "AWS::CloudFormation::StackSet",
+    },
+    "configPolicy5D86D647": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": "arn:*:iam::*:role/AWSCloudFormationStackSetExecutionRole",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "configPolicy5D86D647",
+        "Roles": Array [
+          Object {
+            "Ref": "configRole2A27D4AE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "configRole2A27D4AE": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "cloudformation.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "RoleName": "AWSCloudFormationStackSetAdministrationRole",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "executionPolicy9CCA2020": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "cloudformation:*",
+                "s3:*",
+                "sns:*",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "executionPolicy9CCA2020",
+        "Roles": Array [
+          Object {
+            "Ref": "executionRole2F5D1D4F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "executionRole2F5D1D4F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "RoleName": "AWSCloudFormationStackSetExecutionRole",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;
