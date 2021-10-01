@@ -27,7 +27,7 @@ jobs:
           app_id: ${{ secrets.AUTH_FOR_GITHUB_APP_ID }}
           private_key: ${{ secrets.AUTH_FOR_GITHUB_PRIVATE_KEY }}
       - name: renovate
-        uses: docker://renovate/renovate:24.72.2@sha256:4efd47e2d501390314ecfac3126f4c59bd358075d9cc5fbb858c8a8f4b817261
+        uses: docker://renovate/renovate:24.119.22@sha256:2948ec244387f4220c1b66ae2e94699895ca27f4a6c3ebd8682937ae172a83f7
 
         env:
           RENOVATE_REPOSITORIES: kindlyops/examples
