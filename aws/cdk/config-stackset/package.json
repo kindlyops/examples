@@ -34,7 +34,7 @@
     "npm-check-updates": "11.8.5",
     "projen": "0.27.52",
     "ts-jest": "27.0.5",
-    "ts-node": "9.1.1",
+    "ts-node": "10.2.1",
     "typescript": "4.4.3"
   },
   "dependencies": {
