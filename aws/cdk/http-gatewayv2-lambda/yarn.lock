@@ -1031,10 +1031,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vendia/serverless-express@4.0.0-rc.13":
-  version "4.0.0-rc.13"
-  resolved "https://registry.yarnpkg.com/@vendia/serverless-express/-/serverless-express-4.0.0-rc.13.tgz#6134496e17886e1088332cb251d324698df4b121"
-  integrity sha512-bbxO+3QhYuk12dzzisrbivKZ4xfT925URmRdeJo3rkaJfa0FLM0gvijRGY7wpd8vnozvfrq/k9aTNnIYmvKwjA==
+"@vendia/serverless-express@4.3.11":
+  version "4.3.11"
+  resolved "https://registry.yarnpkg.com/@vendia/serverless-express/-/serverless-express-4.3.11.tgz#e99fe3d19acf30492d23ba455fdf554210e8407b"
+  integrity sha512-rM2lJLIqdeckb/ghE7C7QX7YCH7N+iph5TjLs3Umc/sUey8S2ARiAUPi/WeFZLa1JlVaADiBdpMYbwyNe+5gHg==
 
 abab@^2.0.3:
   version "2.0.5"
