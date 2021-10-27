@@ -26,7 +26,7 @@
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2": "1.125.0",
     "@aws-cdk/aws-apigatewayv2-integrations": "1.125.0",
-    "@aws-cdk/aws-lambda": "1.125.0",
+    "@aws-cdk/aws-lambda": "1.126.0",
     "@aws-cdk/aws-lambda-nodejs": "1.125.0",
     "@aws-cdk/core": "1.125.0",
     "@vendia/serverless-express": "4.3.11",
