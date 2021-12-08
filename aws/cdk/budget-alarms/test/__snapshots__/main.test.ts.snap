@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+Object {
+  "Resources": Object {
+    "MyCfnBudget": Object {
+      "Properties": Object {
+        "Budget": Object {
+          "BudgetLimit": Object {
+            "Amount": 100,
+            "Unit": "USD",
+          },
+          "BudgetName": "daily-spend-budget",
+          "BudgetType": "COST",
+          "CostTypes": Object {
+            "IncludeCredit": false,
+            "IncludeDiscount": true,
+            "IncludeOtherSubscription": true,
+            "IncludeRecurring": true,
+            "IncludeRefund": true,
+            "IncludeSubscription": false,
+            "IncludeSupport": false,
+            "IncludeTax": false,
+            "IncludeUpfront": false,
+            "UseAmortized": false,
+            "UseBlended": false,
+          },
+          "TimeUnit": "DAILY",
+        },
+        "NotificationsWithSubscribers": Array [
+          Object {
+            "Notification": Object {
+              "ComparisonOperator": "comparisonOperator",
+              "NotificationType": "notificationType",
+              "Threshold": 123,
+              "ThresholdType": "thresholdType",
+            },
+            "Subscribers": Array [
+              Object {
+                "Address": "address",
+                "SubscriptionType": "subscriptionType",
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::Budgets::Budget",
+    },
+  },
+}
+`;

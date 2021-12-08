@@ -6,7 +6,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^10.17.0",
+      "version": "^14.17.0",
       "type": "build"
     },
     {
@@ -75,6 +75,16 @@
     },
     {
       "name": "@aws-cdk/assert",
+      "version": "^1.95.2",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-budgets",
+      "version": "^1.95.2",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-sns",
       "version": "^1.95.2",
       "type": "runtime"
     },
