@@ -104,6 +104,14 @@
       "type": "runtime"
     },
     {
+      "name": "aws-lambda",
+      "type": "runtime"
+    },
+    {
+      "name": "axios",
+      "type": "runtime"
+    },
+    {
       "name": "discord-bot-cdk-construct",
       "type": "runtime"
     }

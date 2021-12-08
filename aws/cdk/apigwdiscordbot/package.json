@@ -46,6 +46,8 @@
     "@aws-cdk/aws-lambda-nodejs": "^1.129.0",
     "@aws-cdk/aws-secretsmanager": "^1.129.0",
     "@aws-cdk/core": "^1.129.0",
+    "aws-lambda": "^1.0.7",
+    "axios": "^0.24.0",
     "discord-bot-cdk-construct": "^0.1.8"
   },
   "bundledDependencies": [],

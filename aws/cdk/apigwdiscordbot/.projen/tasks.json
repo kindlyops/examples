@@ -187,7 +187,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import jest jest-junit json-schema npm-check-updates ts-jest ts-node typescript @aws-cdk/assert @aws-cdk/aws-apigateway @aws-cdk/aws-lambda-nodejs @aws-cdk/aws-lambda @aws-cdk/aws-secretsmanager @aws-cdk/core discord-bot-cdk-construct"
+          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import jest jest-junit json-schema npm-check-updates ts-jest ts-node typescript @aws-cdk/assert @aws-cdk/aws-apigateway @aws-cdk/aws-lambda-nodejs @aws-cdk/aws-lambda @aws-cdk/aws-secretsmanager @aws-cdk/core aws-lambda axios discord-bot-cdk-construct"
         },
         {
           "exec": "npx projen"

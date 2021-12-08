@@ -11,6 +11,8 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/aws-secretsmanager',
   ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   deps: [
+    'axios',
+    'aws-lambda',
     'discord-bot-cdk-construct',
   ], /* Runtime dependencies of this module. */
   // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
