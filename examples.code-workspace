@@ -1,0 +1,32 @@
+{
+  "folders": [
+    {
+      "name": "all-examples",
+      "path": "."
+    },
+  {
+      "name": "cdk-budget-alarms",
+      "path": "./aws/cdk/budget-alarms"
+    },
+    {
+      "name": "golang-cdk",
+      "path": "./aws/cdk/gofish"
+    },
+    {
+      "name": "cdk-lambda-monitoring",
+      "path": "./aws/cdk/lambda-monitoring"
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true
+    },
+    "jest.autoRun": "off",
+    "jest.disabledWorkspaceFolders": [
+        "all-examples",
+        "cdk-budget-alarms",
+        "golang-cdk",
+        "cdk-lambda-monitoring",
+    ]
+  }
+}

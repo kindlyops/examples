@@ -1,0 +1,27 @@
+{
+    "// comments": {
+        "// ": "Use IntelliSense to learn about possible attributes, hover to see descriptions.",
+        "///": "For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387"
+    },
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "CDK Debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "program": "${workspaceFolder}/node_modules/aws-cdk/bin/cdk.js",
+            "args": ["synth"],
+            "runtimeArgs": [],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}

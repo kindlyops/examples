@@ -1,19 +1,25 @@
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as logs from '@aws-cdk/aws-logs';
-import * as cdk from '@aws-cdk/core';
 import * as cw from '@aws-cdk/aws-cloudwatch';
-import { App, Construct, RemovalPolicy, Stack, StackProps } from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+//import * as logs from '@aws-cdk/aws-logs';
+import * as cdk from '@aws-cdk/core';
+import {
+  App,
+  Construct,
+  //RemovalPolicy,
+  Stack,
+  StackProps,
+} from '@aws-cdk/core';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
     const lambdaName = `${this.stackName}-ExampleHelloLambda`;
-    const logsGroup = new logs.LogGroup(this, 'lambdaLogGroup', {
-      logGroupName: `/aws/lambda/${lambdaName}`,
-      retention: logs.RetentionDays.THREE_MONTHS,
-      removalPolicy: RemovalPolicy.DESTROY,
-    });
+    // const logsGroup = new logs.LogGroup(this, 'lambdaLogGroup', {
+    //   logGroupName: `/aws/lambda/${lambdaName}`,
+    //   retention: logs.RetentionDays.THREE_MONTHS,
+    //   removalPolicy: RemovalPolicy.RETAIN,
+    // });
 
     const helloLambda = new lambda.Function(this, 'HelloLambda', {
       code: new lambda.InlineCode(
@@ -24,7 +30,7 @@ export class MyStack extends Stack {
       runtime: lambda.Runtime.NODEJS_14_X,
     });
 
-    helloLambda.node.addDependency(logsGroup);
+    //helloLambda.node.addDependency(logsGroup);
 
     const functionErrors = helloLambda.metricErrors({
       period: cdk.Duration.minutes(1),
@@ -35,7 +41,7 @@ export class MyStack extends Stack {
       threshold: 1,
       treatMissingData: cw.TreatMissingData.IGNORE,
       comparisonOperator: cw.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
-      });
+    });
 
   }
 }
