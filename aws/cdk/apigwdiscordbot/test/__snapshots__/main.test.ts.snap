@@ -1,0 +1,681 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+Object {
+  "Outputs": Object {
+    "discordbotendpointdiscordbotapiEndpoint4DA5A53A": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "discordbotendpointdiscordbotapiDeploymentStageprodF573AD37",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParametersad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0ArtifactHashA6EA5163": Object {
+      "Description": "Artifact hash for asset \\"ad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0\\"",
+      "Type": "String",
+    },
+    "AssetParametersad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0S3Bucket8BFE70D0": Object {
+      "Description": "S3 bucket for asset \\"ad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0\\"",
+      "Type": "String",
+    },
+    "AssetParametersad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0S3VersionKeyF480D8E8": Object {
+      "Description": "S3 key for asset version \\"ad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0\\"",
+      "Type": "String",
+    },
+    "AssetParametersffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63ArtifactHash48BD6748": Object {
+      "Description": "Artifact hash for asset \\"ffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63\\"",
+      "Type": "String",
+    },
+    "AssetParametersffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63S3Bucket81FF9F34": Object {
+      "Description": "S3 bucket for asset \\"ffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63\\"",
+      "Type": "String",
+    },
+    "AssetParametersffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63S3VersionKey55C1E5A4": Object {
+      "Description": "S3 key for asset version \\"ffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "discordbotendpointdiscordbotapi9F01A7A8": Object {
+      "Properties": Object {
+        "Name": "discord-bot-api",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "discordbotendpointdiscordbotapiAccount4AD25378": Object {
+      "DependsOn": Array [
+        "discordbotendpointdiscordbotapi9F01A7A8",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "discordbotendpointdiscordbotapiCloudWatchRole0681439A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "discordbotendpointdiscordbotapiCloudWatchRole0681439A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "discordbotendpointdiscordbotapiDeployment10919DFF8b68aeda3e269b11ce70267b4e451883": Object {
+      "DependsOn": Array [
+        "discordbotendpointdiscordbotapivalidator2F5873B0",
+        "discordbotendpointdiscordbotapieventOPTIONS94181C76",
+        "discordbotendpointdiscordbotapieventPOSTB34843CC",
+        "discordbotendpointdiscordbotapievent261096F7",
+        "discordbotendpointdiscordbotapiOPTIONS7D908FD8",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "discordbotendpointdiscordbotapiDeploymentStageprodF573AD37": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "discordbotendpointdiscordbotapiDeployment10919DFF8b68aeda3e269b11ce70267b4e451883",
+        },
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "discordbotendpointdiscordbotapiOPTIONS7D908FD8": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Fn::GetAtt": Array [
+            "discordbotendpointdiscordbotapi9F01A7A8",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "discordbotendpointdiscordbotapievent261096F7": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "discordbotendpointdiscordbotapi9F01A7A8",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "event",
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "discordbotendpointdiscordbotapieventOPTIONS94181C76": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "discordbotendpointdiscordbotapievent261096F7",
+        },
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "discordbotendpointdiscordbotapieventPOSTApiPermissionTesttestdiscordbotendpointdiscordbotapiE3ED2527POSTevent61396A22": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "discordbotendpointdiscordbotlambdaEDF529AC",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+              },
+              "/test-invoke-stage/POST/event",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "discordbotendpointdiscordbotapieventPOSTApiPermissiontestdiscordbotendpointdiscordbotapiE3ED2527POSTeventD44CEF01": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "discordbotendpointdiscordbotlambdaEDF529AC",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+              },
+              "/",
+              Object {
+                "Ref": "discordbotendpointdiscordbotapiDeploymentStageprodF573AD37",
+              },
+              "/POST/event",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "discordbotendpointdiscordbotapieventPOSTB34843CC": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": Array [
+            Object {
+              "StatusCode": "200",
+            },
+            Object {
+              "ResponseTemplates": Object {
+                "application/json": "invalid request signature",
+              },
+              "SelectionPattern": ".*[UNAUTHORIZED].*",
+              "StatusCode": "401",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{
+              \\"timestamp\\": \\"$input.params('x-signature-timestamp')\\",
+              \\"signature\\": \\"$input.params('x-signature-ed25519')\\",
+              \\"jsonBody\\" : $input.json('$')
+            }",
+          },
+          "Type": "AWS",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "discordbotendpointdiscordbotlambdaEDF529AC",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "MethodResponses": Array [
+          Object {
+            "StatusCode": "200",
+          },
+          Object {
+            "StatusCode": "401",
+          },
+        ],
+        "RequestValidatorId": Object {
+          "Ref": "discordbotendpointdiscordbotapivalidator2F5873B0",
+        },
+        "ResourceId": Object {
+          "Ref": "discordbotendpointdiscordbotapievent261096F7",
+        },
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "discordbotendpointdiscordbotapivalidator2F5873B0": Object {
+      "Properties": Object {
+        "RestApiId": Object {
+          "Ref": "discordbotendpointdiscordbotapi9F01A7A8",
+        },
+        "ValidateRequestBody": true,
+        "ValidateRequestParameters": true,
+      },
+      "Type": "AWS::ApiGateway::RequestValidator",
+    },
+    "discordbotendpointdiscordbotlambdaEDF529AC": Object {
+      "DependsOn": Array [
+        "discordbotendpointdiscordbotlambdaServiceRoleDefaultPolicy23EF68EB",
+        "discordbotendpointdiscordbotlambdaServiceRoleE1BA8F0E",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63S3Bucket81FF9F34",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63S3VersionKey55C1E5A4",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersffcf1a77c08a501557af6b7bc169a2e9a9a4b5614ab3963432f0c7c2ec7bbe63S3VersionKey55C1E5A4",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "COMMAND_LAMBDA_ARN": Object {
+              "Fn::GetAtt": Array [
+                "discordcommandslambda383AD657",
+                "Arn",
+              ],
+            },
+            "DISCORD_BOT_API_KEY_NAME": Object {
+              "Fn::Select": Array [
+                6,
+                Object {
+                  "Fn::Split": Array [
+                    ":",
+                    Object {
+                      "Ref": "discordbotendpointoculusstartdiscordapikey9E0BAD85",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "discordbotendpointdiscordbotlambdaServiceRoleE1BA8F0E",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 3,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "discordbotendpointdiscordbotlambdaServiceRoleDefaultPolicy23EF68EB": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "discordbotendpointoculusstartdiscordapikey9E0BAD85",
+              },
+            },
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "discordcommandslambda383AD657",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "discordbotendpointdiscordbotlambdaServiceRoleDefaultPolicy23EF68EB",
+        "Roles": Array [
+          Object {
+            "Ref": "discordbotendpointdiscordbotlambdaServiceRoleE1BA8F0E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "discordbotendpointdiscordbotlambdaServiceRoleE1BA8F0E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "discordbotendpointoculusstartdiscordapikey9E0BAD85": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "GenerateSecretString": Object {},
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "discordcommandslambda383AD657": Object {
+      "DependsOn": Array [
+        "discordcommandslambdaServiceRoleDefaultPolicy09F93C78",
+        "discordcommandslambdaServiceRole1D2A4A42",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0S3Bucket8BFE70D0",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0S3VersionKeyF480D8E8",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersad75987e79437d29fb104b1d16300766b19293675cef961db0be4bc68c8ebae0S3VersionKeyF480D8E8",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DISCORD_BOT_API_KEY_NAME": Object {
+              "Fn::Select": Array [
+                6,
+                Object {
+                  "Fn::Split": Array [
+                    ":",
+                    Object {
+                      "Ref": "discordbotendpointoculusstartdiscordapikey9E0BAD85",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "discordcommandslambdaServiceRole1D2A4A42",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "discordcommandslambdaServiceRole1D2A4A42": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "discordcommandslambdaServiceRoleDefaultPolicy09F93C78": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "discordbotendpointoculusstartdiscordapikey9E0BAD85",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "discordcommandslambdaServiceRoleDefaultPolicy09F93C78",
+        "Roles": Array [
+          Object {
+            "Ref": "discordcommandslambdaServiceRole1D2A4A42",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
