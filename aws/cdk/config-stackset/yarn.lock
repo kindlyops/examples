@@ -9,7 +9,7 @@
   dependencies:
     "@aws-cdk/cloudformation-diff" "2.8.0"
 
-"@aws-cdk/aws-iam@^1.95.2":
+"@aws-cdk/aws-iam@1.134.0":
   version "1.134.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-iam/-/aws-iam-1.134.0.tgz#53a45dd0fd3c1327952dd10209c95a5e8366488d"
   integrity sha512-EZy+oyIiAl2WvAfKpn2zhSZ9Wtcu06RUTIbkrourietnQoQhqhiwpp/H84VosgUgwpHsx7BNmZ8EJJXJXs7XfA==
@@ -55,7 +55,7 @@
     string-width "^4.2.3"
     table "^6.8.0"
 
-"@aws-cdk/core@1.134.0", "@aws-cdk/core@^1.95.2":
+"@aws-cdk/core@1.134.0":
   version "1.134.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/core/-/core-1.134.0.tgz#cdcb94ffcfbfa04cdb9c585f008c995e1f8bad5c"
   integrity sha512-rdQYFTrGBemgy1C23r2s18ONXgnsp4dXyZMTTcy7e6QkF3JBTI4za2GUWY4XQaKnchGV9UhylPNFqh59hXzEUA==
@@ -859,15 +859,15 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.6.2.tgz#331b7b9f8621c638284787c5559423822fdffc50"
   integrity sha512-LSw8TZt12ZudbpHc6EkIyDM3nHVWKYrAvGy6EAJfNfjusbwnThqjqxUKKRwuV3iWYeW/LYMzNgaq3MaLffQ2xA==
 
+"@types/node@14.18.0":
+  version "14.18.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.0.tgz#98df2397f6936bfbff4f089e40e06fa5dd88d32a"
+  integrity sha512-0GeIl2kmVMXEnx8tg1SlG6Gg8vkqirrW752KqolYo1PHevhhZN3bhJ67qHj+bQaINhX0Ra3TlWwRvMCd9iEfNQ==
+
 "@types/node@^10.17.60":
   version "10.17.60"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
-
-"@types/node@^14.17.0":
-  version "14.18.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.0.tgz#98df2397f6936bfbff4f089e40e06fa5dd88d32a"
-  integrity sha512-0GeIl2kmVMXEnx8tg1SlG6Gg8vkqirrW752KqolYo1PHevhhZN3bhJ67qHj+bQaINhX0Ra3TlWwRvMCd9iEfNQ==
 
 "@types/prettier@^2.1.5":
   version "2.3.2"
@@ -4486,7 +4486,7 @@ npm-bundled@^1.1.1:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^11:
+npm-check-updates@11.8.5:
   version "11.8.5"
   resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-11.8.5.tgz#8dec7fd255a437264742c15f9c0bb29f4eceaf55"
   integrity sha512-IYSHjlWe8UEugDy7X0qjBeJwcni4DlcWdBK4QQEbwgkNlEDlXyd4yQJYWFumKaJzrp/n5/EcvaboXsBD1Er/pw==
@@ -5906,7 +5906,7 @@ ts-jest@27.0.5:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-node@^9:
+ts-node@9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.1.1.tgz#51a9a450a3e959401bda5f004a72d54b936d376d"
   integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
