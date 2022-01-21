@@ -25,6 +25,6 @@
     "@aws-cdk/aws-imagebuilder": "1.69.0",
     "@aws-cdk/custom-resources": "1.69.0",
     "@aws-cdk/core": "1.69.0",
-    "source-map-support": "0.5.19"
+    "source-map-support": "0.5.21"
   }
 }
