@@ -14,7 +14,7 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^5.0.0",
     "@octokit/auth-app": "^3.0.0",
-    "@octokit/rest": "^18.0.12"
+    "@octokit/rest": "^19.0.0"
   },
   "devDependencies": {
     "@vercel/ncc": "0.31.1"
