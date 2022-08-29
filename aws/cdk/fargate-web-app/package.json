@@ -20,7 +20,7 @@
     "@aws-cdk/aws-elasticloadbalancingv2": "1.125.0",
     "@aws-cdk/aws-autoscaling": "1.125.0",
     "@aws-cdk/aws-elasticloadbalancingv2-targets": "1.125.0",
-    "@types/jest": "27.0.2",
+    "@types/jest": "28.1.8",
     "@types/node": "10.17.60",
     "jest": "27.2.4",
     "ts-jest": "27.0.5",
