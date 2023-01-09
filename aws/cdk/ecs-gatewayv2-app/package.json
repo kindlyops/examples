@@ -24,7 +24,7 @@
     "@aws-cdk/aws-autoscaling": "1.87.1",
     "@aws-cdk/aws-elasticloadbalancingv2-targets": "1.87.1",
     "@aws-cdk/aws-apigatewayv2-integrations": "1.87.1",
-    "@types/jest": "26.0.20",
+    "@types/jest": "29.2.5",
     "@types/node": "10.17.60",
     "jest": "27.4.7",
     "ts-jest": "26.5.6",
